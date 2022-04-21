@@ -1,13 +1,9 @@
 package org.sil.storyproducer.model
 
 
-import android.os.Build
 import com.squareup.moshi.JsonClass
 import org.sil.storyproducer.BuildConfig
 import org.sil.storyproducer.model.logging.LogEntry
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 

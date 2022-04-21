@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Build
 import androidx.documentfile.provider.DocumentFile
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import net.lingala.zip4j.ZipFile
 import org.sil.storyproducer.BuildConfig
@@ -27,11 +29,11 @@ fun Story.toJson(context: Context){
 
     val filePath = "$PROJECT_DIR/$PROJECT_FILE" // location of file
     val moshi = Moshi
-            .Builder()
-            .add(RectAdapter())
-            .add(UriAdapter())
-            .build()
-    val adapter = Story.jsonAdapter(moshi)
+        .Builder()
+        .add(RectAdapter())
+        .add(UriAdapter())
+        .build()
+    val adapter: JsonAdapter<Story> = moshi.adapter(Story::class.java)
     val oStream = getStoryChildOutputStream(context,
             filePath,"",this.title)
     if(oStream != null) {
@@ -68,11 +70,11 @@ fun storyFromJson(context: Context, storyTitle: DocumentFile): Story?{
     try {
         // use Moshi to restore all information associated with this story
         val moshi = Moshi
-                .Builder()
-                .add(RectAdapter())
-                .add(UriAdapter())
-                .build()
-        val adapter = Story.jsonAdapter(moshi)
+            .Builder()
+            .add(RectAdapter())
+            .add(UriAdapter())
+            .build()
+        val adapter: JsonAdapter<Story> = moshi.adapter(Story::class.java)
         fileContents = getStoryText(context, filePath, storyTitle.name!!)
                 ?: return null
         return adapter.fromJson(fileContents)

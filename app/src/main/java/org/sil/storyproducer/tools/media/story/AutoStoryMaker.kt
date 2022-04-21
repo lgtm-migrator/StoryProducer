@@ -8,8 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.arthenica.mobileffmpeg.Config
-import com.arthenica.mobileffmpeg.FFmpeg
+import com.arthenica.ffmpegkit.FFmpegKitConfig
+import com.arthenica.ffmpegkit.FFmpegKit
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.sil.storyproducer.model.*
 import org.sil.storyproducer.R
@@ -124,13 +124,12 @@ class AutoStoryMaker(private val context: Context) : Thread(), Closeable {
 
         try{
 
-            Config.resetStatistics()
-            Config.enableStatisticsCallback { newStatistics -> time3GPms = newStatistics.time }
-            FFmpeg.execute("-i ${videoTempFile.absolutePath} " +
+            FFmpegKitConfig.enableStatisticsCallback { newStatistics -> time3GPms = newStatistics.time }
+            FFmpegKit.execute("-i ${videoTempFile.absolutePath} " +
                     "-f 3gp -vcodec $VIDEO_3GP_CODEC -framerate $VIDEO_3GP_FRAMERATE -vf " +
                     "scale=${VIDEO_3GP_WIDTH}x$VIDEO_3GP_HEIGHT -acodec $VIDEO_3GP_AUDIO" +
                     " -b:v $VIDEO_3GP_BITRATE " + video3gpFile.absolutePath)
-            Log.w(TAG,FFmpeg.getLastCommandOutput() ?: "No FFMPEG output")
+            Log.w(TAG,FFmpegKitConfig.getLastSession().output ?: "No FFMPEG output")
             copyToWorkspacePath(context,Uri.fromFile(video3gpFile),"$VIDEO_DIR/$video3gpPath")
             Workspace.activeStory.addVideo(video3gpPath)
         } catch(e:Exception) {

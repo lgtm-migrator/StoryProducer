@@ -10,7 +10,7 @@ fun WordLinkList.toJson(context: Context){
     val moshi = Moshi
             .Builder()
             .build()
-    val adapter = WordLinkList.jsonAdapter(moshi)
+    val adapter = moshi.adapter(WordLinkList::class.java)
     val oStream = getWordLinksChildOutputStream(context,
             WORD_LINKS_JSON_FILE,"")
     if(oStream != null) {
@@ -27,7 +27,7 @@ fun wordLinkListFromJson(context: Context): WordLinkList? {
             .Builder()
             .add(UriAdapter())
             .build()
-    val adapter = WordLinkList.jsonAdapter(moshi)
+    val adapter = moshi.adapter(WordLinkList::class.java)
     val fileContents = getStoryText(context, WORD_LINKS_JSON_FILE, WORD_LINKS_DIR) ?: return null
     return adapter.fromJson(fileContents)
 }

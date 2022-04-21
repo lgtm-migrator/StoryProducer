@@ -233,6 +233,6 @@ open class RecordingToolbar : Fragment(){
      * UI testing more difficult.
      */
     private fun isAnimationEnabled(): Boolean {
-        return !PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(activity?.resources?.getString(org.sil.storyproducer.R.string.recording_toolbar_disable_animation), false)
+        return !PreferenceManager.getDefaultSharedPreferences(activity?.applicationContext!!).getBoolean(activity?.resources?.getString(R.string.recording_toolbar_disable_animation), false)
     }
 }
